@@ -79,7 +79,7 @@ function App() {
           }}
         >
           <Typography variant="h5" sx={{ color: "white", textAlign: "center" }}>
-            Unknown game phase: {gameState.phase}
+            Unknown game phase: {gameState.phase}. Please refresh the page.
           </Typography>
         </Box>
       );

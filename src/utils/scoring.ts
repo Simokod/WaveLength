@@ -5,6 +5,9 @@ export const calculateScore = (
   guessPosition: number
 ): number => {
   const distance = Math.abs(targetPosition - guessPosition);
+  console.log("guessPosition", guessPosition);
+  console.log("targetPosition", targetPosition);
+  console.log("distance", distance);
 
   if (distance <= GAME_CONFIG.scoringZones.bullseye.radius)
     return GAME_CONFIG.scoringZones.bullseye.points;

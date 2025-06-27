@@ -61,21 +61,21 @@ export const Dial = ({
       const svg = svgRef.current;
       if (!svg) return;
       const rect = svg.getBoundingClientRect();
-      
+
       // Get the actual SVG dimensions and viewBox for proper scaling
       const svgWidth = rect.width;
       const svgHeight = rect.height;
       const viewBoxWidth = 800; // From viewBox="0 0 800 400"
       const viewBoxHeight = 400;
-      
+
       // Calculate scale factors
       const scaleX = viewBoxWidth / svgWidth;
       const scaleY = viewBoxHeight / svgHeight;
-      
+
       // Convert client coordinates to SVG coordinates with proper scaling
       const clientX = (event.clientX - rect.left) * scaleX;
       const clientY = (event.clientY - rect.top) * scaleY;
-      
+
       // Calculate angle from center
       const dx = clientX - centerX;
       const dy = clientY - centerY;
@@ -89,44 +89,50 @@ export const Dial = ({
     [disabled, centerX, centerY, angleToPosition]
   );
 
-  const handlePointerUpGlobal = useCallback((event: PointerEvent) => {
-    isDraggingRef.current = false;
-    setIsDragging(false);
-    
-    // Release pointer capture
-    if (event.target && 'releasePointerCapture' in event.target) {
-      try {
-        (event.target as Element).releasePointerCapture(event.pointerId);
-      } catch (e) {
-        // Fallback if releasePointerCapture fails
-      }
-    }
-    
-    window.removeEventListener("pointermove", handlePointerMoveGlobal);
-    window.removeEventListener("pointerup", handlePointerUpGlobal);
-  }, [handlePointerMoveGlobal]);
+  const handlePointerUpGlobal = useCallback(
+    (event: PointerEvent) => {
+      isDraggingRef.current = false;
+      setIsDragging(false);
 
-  const handlePointerDown = useCallback((event: React.PointerEvent) => {
-    if (disabled) return;
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(true);
-    isDraggingRef.current = true;
-    
-    // Set pointer capture for better mobile handling
-    if (event.currentTarget && 'setPointerCapture' in event.currentTarget) {
-      try {
-        (event.currentTarget as Element).setPointerCapture(event.pointerId);
-      } catch (e) {
-        // Fallback if setPointerCapture fails
+      // Release pointer capture
+      if (event.target && "releasePointerCapture" in event.target) {
+        try {
+          (event.target as Element).releasePointerCapture(event.pointerId);
+        } catch (e) {
+          // Fallback if releasePointerCapture fails
+        }
       }
-    }
-    
-    window.addEventListener("pointermove", handlePointerMoveGlobal, {
-      passive: false,
-    });
-    window.addEventListener("pointerup", handlePointerUpGlobal);
-  }, [disabled, handlePointerMoveGlobal, handlePointerUpGlobal]);
+
+      window.removeEventListener("pointermove", handlePointerMoveGlobal);
+      window.removeEventListener("pointerup", handlePointerUpGlobal);
+    },
+    [handlePointerMoveGlobal]
+  );
+
+  const handlePointerDown = useCallback(
+    (event: React.PointerEvent) => {
+      if (disabled) return;
+      event.preventDefault();
+      event.stopPropagation();
+      setIsDragging(true);
+      isDraggingRef.current = true;
+
+      // Set pointer capture for better mobile handling
+      if (event.currentTarget && "setPointerCapture" in event.currentTarget) {
+        try {
+          (event.currentTarget as Element).setPointerCapture(event.pointerId);
+        } catch (e) {
+          // Fallback if setPointerCapture fails
+        }
+      }
+
+      window.addEventListener("pointermove", handlePointerMoveGlobal, {
+        passive: false,
+      });
+      window.addEventListener("pointerup", handlePointerUpGlobal);
+    },
+    [disabled, handlePointerMoveGlobal, handlePointerUpGlobal]
+  );
 
   // Remove global listeners on unmount (cleanup)
   useEffect(() => {
@@ -143,21 +149,21 @@ export const Dial = ({
       const svg = svgRef.current;
       if (!svg) return;
       const rect = svg.getBoundingClientRect();
-      
+
       // Get the actual SVG dimensions and viewBox for proper scaling
       const svgWidth = rect.width;
       const svgHeight = rect.height;
       const viewBoxWidth = 800; // From viewBox="0 0 800 400"
       const viewBoxHeight = 400;
-      
+
       // Calculate scale factors
       const scaleX = viewBoxWidth / svgWidth;
       const scaleY = viewBoxHeight / svgHeight;
-      
+
       // Convert client coordinates to SVG coordinates with proper scaling
       const clientX = (event.clientX - rect.left) * scaleX;
       const clientY = (event.clientY - rect.top) * scaleY;
-      
+
       // Calculate angle from center
       const dx = clientX - centerX;
       const dy = clientY - centerY;
@@ -165,29 +171,39 @@ export const Dial = ({
       // Constrain to semicircle (-90 to 90 degrees)
       angle = Math.max(-90, Math.min(90, angle));
       const newPosition = angleToPosition(angle);
-      onPositionChangeRef.current(Math.max(0, Math.min(100, newPosition)));
+      onPositionChangeRef.current(
+        Math.round(Math.max(0, Math.min(100, newPosition)))
+      );
       event.preventDefault();
     },
     [disabled, centerX, centerY, angleToPosition]
   );
 
   // Local pointer up handler for SVG (ensures drag ends if mouse released over SVG)
-  const handlePointerUpLocal = useCallback((event: React.PointerEvent) => {
-    isDraggingRef.current = false;
-    setIsDragging(false);
-    
-    // Release pointer capture
-    if (event.currentTarget && 'releasePointerCapture' in event.currentTarget) {
-      try {
-        (event.currentTarget as Element).releasePointerCapture(event.pointerId);
-      } catch (e) {
-        // Fallback if releasePointerCapture fails
+  const handlePointerUpLocal = useCallback(
+    (event: React.PointerEvent) => {
+      isDraggingRef.current = false;
+      setIsDragging(false);
+
+      // Release pointer capture
+      if (
+        event.currentTarget &&
+        "releasePointerCapture" in event.currentTarget
+      ) {
+        try {
+          (event.currentTarget as Element).releasePointerCapture(
+            event.pointerId
+          );
+        } catch (e) {
+          // Fallback if releasePointerCapture fails
+        }
       }
-    }
-    
-    window.removeEventListener("pointermove", handlePointerMoveGlobal);
-    window.removeEventListener("pointerup", handlePointerUpGlobal);
-  }, [handlePointerMoveGlobal, handlePointerUpGlobal]);
+
+      window.removeEventListener("pointermove", handlePointerMoveGlobal);
+      window.removeEventListener("pointerup", handlePointerUpGlobal);
+    },
+    [handlePointerMoveGlobal, handlePointerUpGlobal]
+  );
 
   // Create scoring zones paths
   const createArcPath = (
@@ -240,7 +256,7 @@ export const Dial = ({
     );
 
     // Close (3 points)
-    const closeWidth = GAME_CONFIG.scoringZones.close.radius * 2; // degrees
+    const closeWidth = GAME_CONFIG.scoringZones.close.radius * 2 - 0.5; // degrees
     closeZone = createArcPath(
       targetAngle - closeWidth,
       targetAngle + closeWidth,
@@ -249,7 +265,7 @@ export const Dial = ({
     );
 
     // Good (2 points)
-    const goodWidth = GAME_CONFIG.scoringZones.good.radius * 2; // degrees
+    const goodWidth = GAME_CONFIG.scoringZones.good.radius * 2 - 1; // degrees
     goodZone = createArcPath(
       targetAngle - goodWidth,
       targetAngle + goodWidth,
@@ -266,9 +282,9 @@ export const Dial = ({
         height="400"
         viewBox="0 0 800 400"
         className="touch-none select-none w-full max-w-4xl h-auto"
-        style={{ 
+        style={{
           maxHeight: "60vh",
-          touchAction: "none"
+          touchAction: "none",
         }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMoveLocal}
