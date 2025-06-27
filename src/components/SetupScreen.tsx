@@ -30,7 +30,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   border: "1px solid rgba(255,255,255,0.2)",
   borderRadius: "24px",
   padding: theme.spacing(1, 1.5),
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     padding: theme.spacing(4),
   },
   boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
@@ -47,13 +47,13 @@ const ModeCard = styled(Card)<{ selected: boolean }>(({ theme, selected }) => ({
   borderRadius: "16px",
   cursor: "pointer",
   // Separate transitions for mobile vs desktop
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down("sm")]: {
     transition: "background 0.3s ease, border 0.3s ease",
     "&:hover": {
       // No layout-affecting changes on mobile
     },
   },
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     transition: "all 0.3s ease",
     "&:hover": {
       transform: "translateY(-4px)",
@@ -61,7 +61,6 @@ const ModeCard = styled(Card)<{ selected: boolean }>(({ theme, selected }) => ({
     },
   },
 }));
-
 
 export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<number>(4); // Default to 4 players
@@ -86,7 +85,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
   return (
     <Box
       sx={{
-        minHeight: "100dvh", 
+        minHeight: "100dvh",
         width: "100vw",
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         display: "flex",
@@ -98,11 +97,11 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
       }}
     >
       <Box
-        sx={{ 
+        sx={{
           width: "100%",
           maxWidth: { xs: "100%", sm: "500px" },
           px: { xs: 2, sm: 3 },
-          py: { xs: 1, sm: 3 }
+          py: { xs: 1, sm: 3 },
         }}
       >
         <Fade in timeout={800}>
@@ -125,12 +124,14 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
               🌊 WAVELENGTH
             </Typography>
 
-            <Box sx={{ 
-              display: "flex", 
-              flexDirection: "column", 
-              gap: { xs: 1.5, sm: 4 }, 
-              minHeight: "auto"
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: { xs: 1.5, sm: 4 },
+                minHeight: "auto",
+              }}
+            >
               {/* Game Mode Selection */}
               <Box>
                 <Typography
@@ -140,49 +141,51 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                     textAlign: "center",
                     mb: { xs: 2, sm: 3 },
                     fontWeight: 600,
-                    fontSize: { xs: "1.2rem", sm: "1.5rem" }
+                    fontSize: { xs: "1.2rem", sm: "1.5rem" },
                   }}
                 >
                   Choose Game Mode
                 </Typography>
-                <Box sx={{ 
-                  display: "flex", 
-                  gap: { xs: 1, sm: 2 },
-                  flexDirection: { xs: "column", sm: "row" }
-                }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: { xs: 1, sm: 2 },
+                    flexDirection: { xs: "column", sm: "row" },
+                  }}
+                >
                   <ModeCard
                     selected={selectedMode === "competitive"}
-                    sx={{ 
-                      flex: { sm: 1 }, 
+                    sx={{
+                      flex: { sm: 1 },
                       height: { xs: "70px", sm: "100px" },
-                      width: "100%"
+                      width: "100%",
                     }}
                   >
                     <CardActionArea
                       onClick={() => setSelectedMode("competitive")}
-                      sx={{ 
-                        p: { xs: 1.5, sm: 2 }, 
+                      sx={{
+                        p: { xs: 1.5, sm: 2 },
                         height: "100%",
                         display: "flex",
-                        alignItems: "center"
+                        alignItems: "center",
                       }}
                     >
                       <CardContent sx={{ p: 0, width: "100%" }}>
                         <Typography
                           variant="h6"
-                          sx={{ 
-                            fontWeight: "bold", 
+                          sx={{
+                            fontWeight: "bold",
                             mb: 1,
-                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                            fontSize: { xs: "1rem", sm: "1.25rem" },
                           }}
                         >
                           🏆 Competitive
                         </Typography>
-                        <Typography 
-                          variant="body2" 
-                          sx={{ 
+                        <Typography
+                          variant="body2"
+                          sx={{
                             opacity: 0.8,
-                            fontSize: { xs: "0.75rem", sm: "0.875rem" }
+                            fontSize: { xs: "0.75rem", sm: "0.875rem" },
                           }}
                         >
                           Play to reach target score - track points!
@@ -193,37 +196,37 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
 
                   <ModeCard
                     selected={selectedMode === "party"}
-                    sx={{ 
-                      flex: { sm: 1 }, 
+                    sx={{
+                      flex: { sm: 1 },
                       height: { xs: "70px", sm: "100px" },
-                      width: "100%"
+                      width: "100%",
                     }}
                   >
                     <CardActionArea
                       onClick={() => setSelectedMode("party")}
-                      sx={{ 
-                        p: { xs: 1.5, sm: 2 }, 
+                      sx={{
+                        p: { xs: 1.5, sm: 2 },
                         height: "100%",
                         display: "flex",
-                        alignItems: "center"
+                        alignItems: "center",
                       }}
                     >
                       <CardContent sx={{ p: 0, width: "100%" }}>
                         <Typography
                           variant="h6"
-                          sx={{ 
-                            fontWeight: "bold", 
+                          sx={{
+                            fontWeight: "bold",
                             mb: 1,
-                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                            fontSize: { xs: "1rem", sm: "1.25rem" },
                           }}
                         >
                           🎉 Party Mode
                         </Typography>
-                        <Typography 
-                          variant="body2" 
-                          sx={{ 
+                        <Typography
+                          variant="body2"
+                          sx={{
                             opacity: 0.8,
-                            fontSize: { xs: "0.75rem", sm: "0.875rem" }
+                            fontSize: { xs: "0.75rem", sm: "0.875rem" },
                           }}
                         >
                           Just for fun - no scoring!
@@ -236,10 +239,10 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
 
               {/* Competitive Mode Settings */}
               <Box
-                sx={{ 
-                  height: { xs: "280px", sm: "320px" }, 
-                  display: "flex", 
-                  alignItems: "center" 
+                sx={{
+                  height: { xs: "280px", sm: "320px" },
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 {selectedMode === "competitive" ? (
@@ -260,13 +263,13 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                           textAlign: "center",
                           mb: { xs: 1, sm: 3 },
                           fontWeight: 600,
-                          fontSize: { xs: "1rem", sm: "1.25rem" }
+                          fontSize: { xs: "1rem", sm: "1.25rem" },
                         }}
                       >
                         How many players?
                       </Typography>
                       <Stack
-                        direction={{ xs: "column", sm: "row" }}
+                        direction="row"
                         spacing={{ xs: 1, sm: 2 }}
                         justifyContent="center"
                         alignItems="center"
@@ -274,7 +277,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                         {[2, 3, 4].map((playerCount) => (
                           <Chip
                             key={playerCount}
-                            label={`${playerCount} players`}
+                            label={playerCount}
                             onClick={() => setSelectedPlayers(playerCount)}
                             sx={{
                               px: { xs: 1.5, sm: 2 },
@@ -282,7 +285,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                               fontSize: { xs: "14px", sm: "16px" },
                               fontWeight: "bold",
                               height: { xs: "40px", sm: "48px" },
-                              width: { xs: "120px", sm: "auto" },
+                              width: { xs: "80px", sm: "auto" },
                               background:
                                 selectedPlayers === playerCount
                                   ? "linear-gradient(145deg, #6366f1 0%, #8b5cf6 100%)"
@@ -318,13 +321,13 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                           textAlign: "center",
                           mb: { xs: 1, sm: 3 },
                           fontWeight: 600,
-                          fontSize: { xs: "1rem", sm: "1.25rem" }
+                          fontSize: { xs: "1rem", sm: "1.25rem" },
                         }}
                       >
                         Target Score
                       </Typography>
                       <Stack
-                        direction={{ xs: "column", sm: "row" }}
+                        direction="row"
                         spacing={{ xs: 1, sm: 2 }}
                         justifyContent="center"
                         alignItems="center"
@@ -332,7 +335,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                         {scoreOptions.map((score) => (
                           <Chip
                             key={score}
-                            label={`${score} points`}
+                            label={score}
                             onClick={() => setSelectedScore(score)}
                             sx={{
                               px: { xs: 1.5, sm: 2 },
@@ -340,7 +343,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                               fontSize: { xs: "14px", sm: "16px" },
                               fontWeight: "bold",
                               height: { xs: "40px", sm: "48px" },
-                              width: { xs: "120px", sm: "auto" },
+                              width: { xs: "80px", sm: "auto" },
                               background:
                                 selectedScore === score
                                   ? "linear-gradient(145deg, #6366f1 0%, #8b5cf6 100%)"
@@ -439,7 +442,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                       : "none",
                   },
                   width: { xs: "100%", sm: "auto" },
-                  minHeight: { xs: "48px", sm: "auto" }
+                  minHeight: { xs: "48px", sm: "auto" },
                 }}
               >
                 START GAME
