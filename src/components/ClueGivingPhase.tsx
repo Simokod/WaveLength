@@ -296,7 +296,10 @@ export const ClueGivingPhase = ({
             </Box>
 
             {/* Clue Input */}
-            <StyledPaper elevation={0} sx={{ mb: { xs: 2, sm: 3 }, py: { xs: 1.5, sm: 2 } }}>
+            <StyledPaper
+              elevation={0}
+              sx={{ mb: { xs: 2, sm: 3 }, py: { xs: 1.5, sm: 2 } }}
+            >
               <Typography
                 variant="body1"
                 component="label"

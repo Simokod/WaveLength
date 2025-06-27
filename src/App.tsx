@@ -1,20 +1,20 @@
-import { Box, Typography } from '@mui/material';
-import { useGameState } from './hooks/useGameState';
-import { SetupScreen } from './components/SetupScreen';
-import { ClueGivingPhase } from './components/ClueGivingPhase';
-import { GuessingPhase } from './components/GuessingPhase';
-import { RevealPhase } from './components/RevealPhase';
-import { GameOverScreen } from './components/GameOverScreen';
+import { Box, Typography } from "@mui/material";
+import { useGameState } from "./hooks/useGameState";
+import { SetupScreen } from "./components/SetupScreen";
+import { ClueGivingPhase } from "./components/ClueGivingPhase";
+import { GuessingPhase } from "./components/GuessingPhase";
+import { RevealPhase } from "./components/RevealPhase";
+import { GameOverScreen } from "./components/GameOverScreen";
 
 function App() {
-  const { 
-    gameState, 
-    initializeGame, 
-    setClue, 
-    setGuessPosition, 
-    revealAndScore, 
-    nextPlayer, 
-    resetGame 
+  const {
+    gameState,
+    initializeGame,
+    setClue,
+    setGuessPosition,
+    revealAndScore,
+    nextPlayer,
+    resetGame,
   } = useGameState();
 
   if (!gameState) {
@@ -24,7 +24,7 @@ function App() {
   const currentPlayer = gameState.players[gameState.currentPlayerIndex];
 
   switch (gameState.phase) {
-    case 'clue-giving':
+    case "clue-giving":
       return (
         <ClueGivingPhase
           currentPlayer={currentPlayer}
@@ -33,7 +33,7 @@ function App() {
         />
       );
 
-    case 'guessing':
+    case "guessing":
       return (
         <GuessingPhase
           currentPlayer={currentPlayer}
@@ -45,7 +45,7 @@ function App() {
         />
       );
 
-    case 'reveal':
+    case "reveal":
       return (
         <RevealPhase
           currentPlayer={currentPlayer}
@@ -56,7 +56,7 @@ function App() {
         />
       );
 
-    case 'game-over':
+    case "game-over":
       return (
         <GameOverScreen
           players={gameState.players}
@@ -75,7 +75,7 @@ function App() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            p: 2
+            p: 2,
           }}
         >
           <Typography variant="h5" sx={{ color: "white", textAlign: "center" }}>

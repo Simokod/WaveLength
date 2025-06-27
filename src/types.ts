@@ -1,5 +1,10 @@
-export type GamePhase = 'setup' | 'clue-giving' | 'guessing' | 'reveal' | 'game-over';
-export type GameMode = 'competitive' | 'party';
+export type GamePhase =
+  | "setup"
+  | "clue-giving"
+  | "guessing"
+  | "reveal"
+  | "game-over";
+export type GameMode = "competitive" | "party";
 
 export interface Player {
   id: number;
