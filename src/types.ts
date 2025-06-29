@@ -41,8 +41,8 @@ export interface GameState {
 export interface GameConfig {
   minPlayers: number;
   maxPlayers: number;
-  defaultTargetScore: number;
   timerDuration: number;
+  scoreOptions: number[];
   scoringZones: {
     bullseye: { radius: number; points: number };
     close: { radius: number; points: number };

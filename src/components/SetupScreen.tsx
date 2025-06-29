@@ -65,7 +65,7 @@ const ModeCard = styled(Card)<{ selected: boolean }>(({ theme, selected }) => ({
 export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<number>(4); // Default to 4 players
   const [selectedScore, setSelectedScore] = useState(
-    GAME_CONFIG.defaultTargetScore
+    GAME_CONFIG.scoreOptions[0]
   );
   const [selectedMode, setSelectedMode] = useState<GameMode>("competitive");
 
@@ -77,8 +77,6 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
       onStartGame(selectedPlayers, selectedScore, selectedMode);
     }
   };
-
-  const scoreOptions = [20, 50, 100];
 
   const canStart = true; // Always can start now since we have defaults
 
@@ -332,7 +330,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        {scoreOptions.map((score) => (
+                        {GAME_CONFIG.scoreOptions.map((score) => (
                           <Chip
                             key={score}
                             label={score}

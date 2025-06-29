@@ -31,7 +31,7 @@ export const SPECTRUM_CARDS: SpectrumCard[] = [
 export const GAME_CONFIG: GameConfig = {
   minPlayers: 2,
   maxPlayers: 4,
-  defaultTargetScore: 12,
+  scoreOptions: [20, 50, 100],
   timerDuration: 60,
   scoringZones: {
     bullseye: { radius: 2, points: 4 },
