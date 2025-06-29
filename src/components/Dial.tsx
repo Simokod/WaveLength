@@ -205,31 +205,51 @@ export const Dial = ({
     [handlePointerMoveGlobal, handlePointerUpGlobal]
   );
 
-  // Create scoring zones paths
+  // Create scoring zones paths with overflow handling
   const createArcPath = (
     startAngle: number,
     endAngle: number,
     innerRadius: number,
     outerRadius: number
   ) => {
+    // Clamp angles to the semicircle bounds (-90 to 90)
+    const clampedStartAngle = Math.max(-90, Math.min(90, startAngle));
+    const clampedEndAngle = Math.max(-90, Math.min(90, endAngle));
+
     const start1 = {
-      x: centerX + innerRadius * Math.cos(((startAngle - 90) * Math.PI) / 180),
-      y: centerY + innerRadius * Math.sin(((startAngle - 90) * Math.PI) / 180),
+      x:
+        centerX +
+        innerRadius * Math.cos(((clampedStartAngle - 90) * Math.PI) / 180),
+      y:
+        centerY +
+        innerRadius * Math.sin(((clampedStartAngle - 90) * Math.PI) / 180),
     };
     const end1 = {
-      x: centerX + innerRadius * Math.cos(((endAngle - 90) * Math.PI) / 180),
-      y: centerY + innerRadius * Math.sin(((endAngle - 90) * Math.PI) / 180),
+      x:
+        centerX +
+        innerRadius * Math.cos(((clampedEndAngle - 90) * Math.PI) / 180),
+      y:
+        centerY +
+        innerRadius * Math.sin(((clampedEndAngle - 90) * Math.PI) / 180),
     };
     const start2 = {
-      x: centerX + outerRadius * Math.cos(((startAngle - 90) * Math.PI) / 180),
-      y: centerY + outerRadius * Math.sin(((startAngle - 90) * Math.PI) / 180),
+      x:
+        centerX +
+        outerRadius * Math.cos(((clampedStartAngle - 90) * Math.PI) / 180),
+      y:
+        centerY +
+        outerRadius * Math.sin(((clampedStartAngle - 90) * Math.PI) / 180),
     };
     const end2 = {
-      x: centerX + outerRadius * Math.cos(((endAngle - 90) * Math.PI) / 180),
-      y: centerY + outerRadius * Math.sin(((endAngle - 90) * Math.PI) / 180),
+      x:
+        centerX +
+        outerRadius * Math.cos(((clampedEndAngle - 90) * Math.PI) / 180),
+      y:
+        centerY +
+        outerRadius * Math.sin(((clampedEndAngle - 90) * Math.PI) / 180),
     };
 
-    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+    const largeArc = clampedEndAngle - clampedStartAngle > 180 ? 1 : 0;
 
     return `
       M ${start1.x} ${start1.y}
@@ -240,15 +260,72 @@ export const Dial = ({
     `;
   };
 
+  // Create overflow zones for targets near edges
+  const createOverflowZones = (
+    startAngle: number,
+    endAngle: number,
+    innerRadius: number,
+    outerRadius: number
+  ) => {
+    const zones = [];
+
+    // Left overflow (when startAngle < -90)
+    if (startAngle < -91) {
+      const overflowEndAngle = Math.min(endAngle, -90);
+      const overflowStartAngle = startAngle + 180;
+      const overflowEnd = Math.min(90, overflowEndAngle + 180);
+
+      if (overflowStartAngle <= 90 && overflowEnd >= overflowStartAngle) {
+        zones.push(
+          createArcPath(
+            overflowStartAngle,
+            overflowEnd,
+            innerRadius,
+            outerRadius
+          )
+        );
+      }
+    }
+
+    // Right overflow (when endAngle > 90)
+    if (endAngle > 91) {
+      const overflowStartAngle = Math.max(startAngle, 90);
+      const overflowEndAngle = endAngle - 180;
+      const overflowStart = Math.max(-90, overflowStartAngle - 180);
+
+      if (overflowStart <= -90 && overflowEndAngle >= overflowStart) {
+        zones.push(
+          createArcPath(
+            overflowStart,
+            overflowEndAngle,
+            innerRadius,
+            outerRadius
+          )
+        );
+      }
+    }
+
+    return zones;
+  };
+
   // Target zones (if showing) - 4 levels of accuracy as sectors
   let bullseyeZone = "";
+  let bullseyeOverflow: string[] = [];
   let closeZone = "";
+  let closeOverflow: string[] = [];
   let goodZone = "";
+  let goodOverflow: string[] = [];
 
   if (showTarget && targetPosition !== undefined) {
     // Bullseye (4 points) - smallest, most accurate
     const bullseyeWidth = GAME_CONFIG.scoringZones.bullseye.radius * 2; // degrees
     bullseyeZone = createArcPath(
+      targetAngle - bullseyeWidth,
+      targetAngle + bullseyeWidth,
+      0,
+      radius - strokeWidth / 2
+    );
+    bullseyeOverflow = createOverflowZones(
       targetAngle - bullseyeWidth,
       targetAngle + bullseyeWidth,
       0,
@@ -263,10 +340,22 @@ export const Dial = ({
       0,
       radius - strokeWidth / 2
     );
+    closeOverflow = createOverflowZones(
+      targetAngle - closeWidth,
+      targetAngle + closeWidth,
+      0,
+      radius - strokeWidth / 2
+    );
 
     // Good (2 points)
     const goodWidth = GAME_CONFIG.scoringZones.good.radius * 2 - 1; // degrees
     goodZone = createArcPath(
+      targetAngle - goodWidth,
+      targetAngle + goodWidth,
+      0,
+      radius - strokeWidth / 2
+    );
+    goodOverflow = createOverflowZones(
       targetAngle - goodWidth,
       targetAngle + goodWidth,
       0,
@@ -311,6 +400,16 @@ export const Dial = ({
               stroke="rgb(255, 255, 0)"
               strokeWidth={2}
             />
+            {/* Good zone overflow */}
+            {goodOverflow.map((overflowPath, index) => (
+              <path
+                key={`good-overflow-${index}`}
+                d={overflowPath}
+                fill="rgba(255, 255, 0, 1)"
+                stroke="rgb(255, 255, 0)"
+                strokeWidth={2}
+              />
+            ))}
 
             {/* Close zone (3 points) - orange */}
             <path
@@ -319,6 +418,16 @@ export const Dial = ({
               stroke="rgb(255, 165, 0)"
               strokeWidth={2}
             />
+            {/* Close zone overflow */}
+            {closeOverflow.map((overflowPath, index) => (
+              <path
+                key={`close-overflow-${index}`}
+                d={overflowPath}
+                fill="rgba(255, 165, 0, 1)"
+                stroke="rgb(255, 165, 0)"
+                strokeWidth={2}
+              />
+            ))}
 
             {/* Bullseye (4 points) - light blue */}
             <path
@@ -327,6 +436,16 @@ export const Dial = ({
               stroke="rgb(135, 206, 235)"
               strokeWidth={2}
             />
+            {/* Bullseye overflow */}
+            {bullseyeOverflow.map((overflowPath, index) => (
+              <path
+                key={`bullseye-overflow-${index}`}
+                d={overflowPath}
+                fill="rgba(135, 206, 235, 1)"
+                stroke="rgb(135, 206, 235)"
+                strokeWidth={2}
+              />
+            ))}
           </>
         )}
 

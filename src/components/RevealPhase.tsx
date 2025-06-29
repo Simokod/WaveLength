@@ -228,8 +228,9 @@ export const RevealPhase = ({
                       fontSize: { xs: "1.2rem", sm: "1.5rem" },
                     }}
                   >
-                    {Math.round(
-                      Math.abs(round.targetPosition - round.guessPosition)
+                    {Math.min(
+                      Math.abs(round.targetPosition - round.guessPosition),
+                      101 - Math.abs(round.targetPosition - round.guessPosition)
                     )}
                   </Typography>
                 </Box>

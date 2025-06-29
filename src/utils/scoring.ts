@@ -4,10 +4,10 @@ export const calculateScore = (
   targetPosition: number,
   guessPosition: number
 ): number => {
-  const distance = Math.abs(targetPosition - guessPosition);
-  console.log("guessPosition", guessPosition);
-  console.log("targetPosition", targetPosition);
-  console.log("distance", distance);
+  // Calculate the shortest distance considering wraparound at edges
+  const directDistance = Math.abs(targetPosition - guessPosition);
+  const wrapDistance = 101 - directDistance; // Distance going the other way around
+  const distance = Math.min(directDistance, wrapDistance);
 
   if (distance <= GAME_CONFIG.scoringZones.bullseye.radius)
     return GAME_CONFIG.scoringZones.bullseye.points;

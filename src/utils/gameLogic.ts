@@ -12,7 +12,7 @@ export const generateNewRound = (usedCards: number[]): Round => {
 
   return {
     spectrumCard,
-    targetPosition: Math.floor(Math.random() * 61) + 20, // 20-80 to avoid edges
+    targetPosition: Math.floor(Math.random() * 101), // 0-100 to allow edge targets
     clue: "",
     guessPosition: 50,
     pointsScored: 0,

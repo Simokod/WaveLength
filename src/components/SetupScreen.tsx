@@ -78,7 +78,7 @@ export const SetupScreen = ({ onStartGame }: SetupScreenProps) => {
     }
   };
 
-  const scoreOptions = [12, 15, 20];
+  const scoreOptions = [20, 50, 100];
 
   const canStart = true; // Always can start now since we have defaults
 
